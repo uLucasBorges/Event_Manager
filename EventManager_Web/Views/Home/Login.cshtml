@@ -1,0 +1,48 @@
+﻿@model loginModel
+
+<h1 class="text-center mt-4">Login</h1>
+
+<div class="container mt-4">
+    <form id="loginForm" method="post" asp-controller="Home" asp-action="LoginObj">
+        <!-- Usuário -->
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label">Usuário</label>
+            <input type="text" class="form-control" asp-for="Email" placeholder="E-mail" required>
+        </div>
+
+        <!-- Senha -->
+        <div class="mb-3">
+            <label asp-for="Password" class="form-label">Senha</label>
+            <input type="password" class="form-control" asp-for="Password" placeholder="Senha" required>
+        </div>
+
+        <!-- Mensagem de sucesso -->
+        @if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+        {
+            <div class="alert alert-success text-center">
+                @ViewBag.SuccessMessage
+            </div>
+        }
+
+        <!-- Mensagem de erro -->
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger text-center">
+                @Html.ValidationSummary(false)
+            </div>
+        }
+
+        <!-- Botões de Login -->
+        <div class="text-center mt-3">
+            <button type="submit" class="btn btn-primary">Entrar</button>
+        </div>
+    </form>
+</div>
+
+<!-- JavaScript para ocultar a mensagem de sucesso automaticamente -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".alert-success").delay(2000).fadeOut();
+    });
+</script>

@@ -1,0 +1,97 @@
+﻿<h1 class="text-center mt-4">Comprar Ingresso</h1>
+
+<div class="container mt-4">
+    <form id="ticketForm" method="post" asp-controller="Home" asp-action="FinalizarCompra">
+        <div class="row">
+            <!-- Nome do titular -->
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="nomeTitular" class="form-label">Nome do Titular</label>
+                    <input type="text" class="form-control" id="nomeTitular" name="NomeTitular" placeholder="Digite o nome completo" required>
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="email" class="form-label">E-mail</label>
+                    <input type="email" class="form-control" id="email" name="Email" placeholder="Digite seu e-mail" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- CPF -->
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="cpf" class="form-label">CPF</label>
+                    <input type="text" class="form-control" id="cpf" name="Cpf" placeholder="Digite seu CPF" required>
+                </div>
+            </div>
+
+            <!-- Tipo de ingresso -->
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="tipoIngresso" class="form-label">Tipo de Ingresso</label>
+                    <select class="form-select" id="tipoIngresso" name="TipoIngresso" required>
+                        <option selected disabled>Selecione o tipo</option>
+                        <option value="Pista">Pista</option>
+                        <option value="VIP">VIP</option>
+                        <option value="Camarote">Camarote</option>
+                        <option value="Estudante">Estudante (Desconto especial)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Quantidade de ingressos -->
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="quantidade" class="form-label">Quantidade de Ingressos</label>
+                    <input type="number" class="form-control" id="quantidade" name="Quantidade" min="1" max="10" value="1" required>
+                </div>
+            </div>
+
+            <!-- Forma de pagamento -->
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="formaPagamento" class="form-label">Forma de Pagamento</label>
+                    <select class="form-select" id="formaPagamento" name="FormaPagamento" required>
+                        <option selected disabled>Escolha a forma de pagamento</option>
+                        <option value="Cartão de Crédito">Cartão de Crédito</option>
+                        <option value="Boleto">Boleto</option>
+                        <option value="Pix">Pix</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botão para finalizar a compra -->
+        <div class="text-center mt-3">
+            <button type="submit" class="btn btn-primary px-4 py-2">Finalizar Compra</button>
+        </div>
+    </form>
+</div>
+
+<!-- Alerta Sobreposto -->
+<div id="alertNotification" class="position-fixed top-50 start-50 translate-middle alert alert-success text-center shadow-lg"
+     style="display: none; z-index: 1050; padding: 20px; min-width: 300px; border-radius: 8px;">
+    ✅ Compra realizada com sucesso!
+</div>
+
+<!-- Inclusão do JavaScript -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#cpf").mask("000.000.000-00"); // Formatação do CPF
+
+        $("#ticketForm").submit(function (event) {
+            event.preventDefault(); // Impede o envio real do formulário
+
+            // Exibe o alerta sobreposto
+            $("#alertNotification").fadeIn().delay(3000).fadeOut();
+        });
+    });
+</script>

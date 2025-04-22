@@ -1,0 +1,64 @@
+﻿@model registerModel
+
+<h1 class="text-center mt-4">Cadastro de Usuário</h1>
+
+<div class="container mt-4">
+    <form id="registerForm" method="post" asp-controller="Home" asp-action="Register">
+        <!-- Nome Completo -->
+        <div class="mb-3">
+            <label asp-for="Nome" class="form-label">Nome Completo</label>
+            <input type="text" class="form-control" asp-for="Nome" placeholder="Digite seu nome" required>
+        </div>
+
+        <!-- E-mail -->
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label">E-mail</label>
+            <input type="email" class="form-control" asp-for="Email" placeholder="Digite seu e-mail" required>
+        </div>
+
+        <!-- CPF -->
+        <div class="mb-3">
+            <label asp-for="CPF" class="form-label">CPF</label>
+            <input type="text" class="form-control" asp-for="CPF" placeholder="000.000.000-00" required>
+        </div>
+
+        <!-- Telefone -->
+        <div class="mb-3">
+            <label asp-for="Telefone" class="form-label">Telefone</label>
+            <input type="tel" class="form-control" asp-for="Telefone" placeholder="(00) 00000-0000" required>
+        </div>
+
+        <!-- Usuário -->
+        <div class="mb-3">
+            <label asp-for="Usuario" class="form-label">Usuário</label>
+            <input type="text" class="form-control" asp-for="Nome" placeholder="Nome de usuário" required>
+        </div>
+
+        <!-- Senha -->
+        <div class="mb-3">
+            <label asp-for="Password" class="form-label">Senha</label>
+            <input type="password" class="form-control" asp-for="Password" placeholder="Senha" required>
+        </div>
+
+        <!-- Botão de Cadastro -->
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Cadastrar</button>
+        </div>
+    </form>
+</div>
+
+<!-- Alerta Sobreposto -->
+<div id="alertNotification" class="position-fixed top-50 start-50 translate-middle alert alert-success text-center shadow-lg"
+     style="display: none; z-index: 1050; padding: 20px; min-width: 300px; border-radius: 8px;">
+    ✅ Cadastro realizado com sucesso!
+</div>
+
+<!-- Inclusão do JavaScript -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#registerForm").submit(function () {
+            $("#alertNotification").fadeIn().delay(2000).fadeOut();
+        });
+    });
+</script>

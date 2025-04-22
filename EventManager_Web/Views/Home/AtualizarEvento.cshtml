@@ -1,0 +1,77 @@
+﻿@model Evento
+
+<h1 class="text-center mt-4">Atualizar Evento</h1>
+
+<div class="container mt-4">
+    <form id="eventForm" method="post" asp-action="AtualizarEventoUpdate">
+        <input type="hidden" name="Id" value="@Model.Id" />
+
+        <!-- Nome do evento -->
+        <div class="mb-3">
+            <label for="nomeEvento" class="form-label">Nome do Evento</label>
+            <input type="text" class="form-control" id="nomeEvento" name="Nome" value="@Model.Nome" required>
+        </div>
+
+        <!-- Descrição -->
+        <div class="mb-3">
+            <label for="descricao" class="form-label">Descrição</label>
+            <textarea class="form-control" id="descricao" name="Descricao" rows="3" required>@Model.Descricao</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="imagemURL" class="form-label">Imagem</label>
+            <textarea class="form-control" id="imagemURL" name="imagemURL" rows="3" required>@Model.imagemURL</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="feedback" class="form-label">Feedback</label>
+            <textarea class="form-control" id="feedback" name="Feedback" rows="3" required>@Model.Feedback</textarea>
+        </div>
+
+        <!-- Local do evento -->
+        <div class="mb-3">
+            <label for="localEvento" class="form-label">Local do Evento</label>
+            <select class="form-select" id="localEvento" name="LocalId" required>
+                @foreach (var local in ViewBag.Locais)
+                {
+                    <option value="@local.Id" selected="@(local.Id == Model.LocalId)">@local.Nome</option>
+                }
+            </select>
+        </div>
+
+        <!-- Data do evento -->
+        <div class="mb-3">
+            <label for="dataEvento" class="form-label">Data do Evento</label>
+            <input type="date" class="form-control" id="dataEvento" name="Data" value="@Model.Data.ToString("yyyy-MM-dd")" required>
+        </div>
+
+        <!-- Capacidade máxima -->
+        <div class="mb-3">
+            <label for="capacidadeMaxima" class="form-label">Capacidade Máxima</label>
+            <input type="number" class="form-control" id="capacidadeMaxima" name="Capacidade" value="@Model.CapacidadeMaxima" required>
+        </div>
+
+        <!-- Botão para atualizar o evento -->
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Atualizar Evento</button>
+            <a asp-action="Eventos" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+<!-- Alerta Sobreposto -->
+<div id="alertNotification" class="position-fixed top-50 start-50 translate-middle alert alert-success text-center shadow-lg"
+     style="display: none; z-index: 1050; padding: 20px; min-width: 300px; border-radius: 8px;">
+    ✅ Evento atualizado com sucesso!
+</div>
+
+<!-- Inclusão do JavaScript -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#eventForm").submit(function () {
+            // Exibe o alerta sobreposto antes de enviar o formulário
+            $("#alertNotification").fadeIn().delay(2000).fadeOut();
+        });
+    });
+</script>
