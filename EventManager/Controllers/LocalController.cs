@@ -21,6 +21,17 @@ public class LocalController : ControllerBase
         return Ok(locais);
     }
 
+    [HttpGet("{id}")]
+    public ActionResult<Evento> ObterEventoPorId(int id)
+    {
+        var evento = _localService.ObterLocalPorId(id);
+
+        if (evento == null)
+            return NotFound("Local não encontrado.");
+
+        return Ok(evento);
+    }
+
     [HttpPost]
     public async Task<ActionResult> CriarLocal([FromBody] Local local)
     {
@@ -35,34 +46,23 @@ public class LocalController : ControllerBase
         }
     }
 
-    [HttpPut("{id}")]
-    public async Task<ActionResult> AtualizarLocal(int id, [FromBody] Local local)
+    [HttpPost("atualizar")]
+    public async Task<IActionResult> AtualizarEvento([FromBody] Local local)
     {
-        if (id != local.Id)
-            return BadRequest("Erro: ID do local inconsistente.");
+        await _localService.AtualizarLocal(local);
+        //if (resultado.StartsWith("Erro"))
+        //    return BadRequest(resultado);
 
-        try
-        {
-            await _localService.AtualizarLocal(local);
-            return Ok("Local atualizado com sucesso!");
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        return Ok();
     }
 
-    [HttpDelete("{id}")]
-    public async Task<ActionResult> DeletarLocal(int id)
+    [HttpPost("deletar/{localId}")]
+    public async Task<IActionResult> DeletarEvento([FromRoute] int localId)
     {
-        try
-        {
-            await _localService.DeletarLocal(id);
-            return Ok("Local removido com sucesso!");
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        await _localService.DeletarLocal(localId);
+
+        return Ok();
     }
+
+
 }

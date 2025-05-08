@@ -1,50 +1,61 @@
-﻿using Dapper;
+﻿using System.Data;
+using Dapper;
+using EventManager.Data;
 using EventManager.Repository.Interfaces;
 using GestaoDeEventos.Models;
-using GestaoDeEventos.Repository.Data;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Options;
 
 namespace GestaoDeEventos.Repository
 {
     public class LocalRepository : ILocalRepository
     {
-        private DbSession _Dbconfiguration;
+        private readonly string _connectionString;
 
-        public LocalRepository(DbSession configuration)
+        public LocalRepository(IOptions<DatabaseConfig> config)
         {
-            _Dbconfiguration = configuration;
+            _connectionString = config.Value.Read;
         }
+
 
         public IEnumerable<Local> ObterTodos()
         {
-            using (var connection = _Dbconfiguration.Connection)
+            using (var connection = new SqlConnection(_connectionString))
             {
                 return connection.Query<Local>("SELECT * FROM Locais");
             }
         }
 
+        public Local ObterPorId(int id)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                return connection.QueryFirstOrDefault<Local>("SELECT * FROM Locais WHERE Id = @Id", new { Id = id });
+            }
+        }
+
         public async Task Adicionar(Local local)
         {
-            using (var connection = _Dbconfiguration.Connection)
+            using (var connection = new SqlConnection(_connectionString))
             {
-                string sql = @"INSERT INTO Eventos (Nome, Data, LocalId, CapacidadeMaxima, ImagemUrl, Descricao, Feedback) 
-               VALUES (@Nome, @Data, @LocalId, @CapacidadeMaxima, @ImagemUrl, @Descricao, @Feedback)";
+                string sql = @"INSERT INTO Locais (Nome, Endereco) 
+                               VALUES (@Nome, @Endereco)";
                 await connection.ExecuteAsync(sql, local);
             }
         }
 
         public async Task Atualizar(Local local)
         {
-            using (var connection = _Dbconfiguration.Connection)
+            using (var connection = new SqlConnection(_connectionString))
             {
-                string sql = "UPDATE Locais SET Nome = @Nome, Endereco = @Endereco, Capacidade = @Capacidade WHERE Id = @Id";
+                string sql = "UPDATE Locais SET Nome = @Nome, Endereco = @Endereco WHERE Id = @Id";
                 await connection.ExecuteAsync(sql, local);
             }
         }
 
         public async Task Deletar(int id)
         {
-            using (var connection = _Dbconfiguration.Connection)
+            using (var connection = new SqlConnection(_connectionString))
             {
                 string sql = "DELETE FROM Locais WHERE Id = @Id";
                 await connection.ExecuteAsync(sql, new { Id = id });

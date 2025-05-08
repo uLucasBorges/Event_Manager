@@ -1,12 +1,15 @@
-﻿@model List<Evento>
-
-<h1 class="text-center mt-4">Lista de Eventos</h1>
+﻿<h1 class="text-center mt-4">Lista de Eventos</h1>
 
 @if (ViewBag.Role != null)
 {
-    <!-- Botão para criar novo evento -->
-    <div class="text-end mb-3">
-        <a asp-controller="Home" asp-action="CriarEvento" class="btn btn-primary">Criar Novo Evento</a>
+    <!-- Botões para criar novo evento -->
+    <div class="d-flex justify-content-end mb-3">
+        <a asp-controller="Home" asp-action="CriarEvento" class="btn btn-primary me-2" data-bs-toggle="tooltip" title="Criar Novo Evento">
+            <i class="bi bi-plus-circle"></i> Criar Evento
+        </a>
+        <a asp-controller="Home" asp-action="CriarLocal" class="btn btn-primary" data-bs-toggle="tooltip" title="Criar Novo Local">
+            <i class="bi bi-geo-alt"></i> Criar Local
+        </a>
     </div>
 }
 
@@ -16,26 +19,32 @@
         {
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="card h-100">
-                    <img src="@evento.imagemURL" class="card-img-top img-fluid" alt="@evento.Nome" style="max-height: 200px; object-fit: cover;">
+                    <img src="@evento.imagemURL" class="card-img-top img-fluid" alt="@evento.Nome" style="height: 200px; width: 100%; object-fit: cover;">
 
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">@evento.Nome</h5>
-                        <p class="card-text">@evento.Descricao</p>
+                        <p class="card-text text-truncate" style="max-height: 80px; overflow: hidden;">@evento.Descricao</p>
                         <p class="text-muted">Data: @evento.Data.ToString("dd/MM/yyyy")</p>
 
                         <div class="mt-auto d-flex justify-content-between gap-2">
-                            <a asp-controller="Home" asp-action="Checkout" class="btn btn-primary btn-sm flex-grow-1">Comprar Ingresso</a>
+                            <a asp-controller="Home" asp-action="Checkout" class="btn btn-primary btn-sm flex-grow-1" data-bs-toggle="tooltip" title="Comprar Ingresso">
+                                <i class="bi bi-cart"></i> Comprar
+                            </a>
 
                             @if (ViewBag.Role != null)
                             {
                                 <form method="post" asp-controller="Home" asp-action="AtualizarEvento">
                                     <input type="hidden" name="eventoId" value="@evento.Id" />
-                                    <button type="submit" class="btn btn-secondary btn-sm flex-grow-1">Editar</button>
+                                    <button type="submit" class="btn btn-secondary btn-sm flex-grow-1" data-bs-toggle="tooltip" title="Editar Evento">
+                                        <i class="bi bi-pencil"></i> Editar
+                                    </button>
                                 </form>
 
                                 <form method="post" asp-controller="Home" asp-action="DeletarEvento">
                                     <input type="hidden" name="eventoId" value="@evento.Id" />
-                                    <button type="submit" class="btn btn-danger btn-sm flex-grow-1">Apagar</button>
+                                    <button type="submit" class="btn btn-danger btn-sm flex-grow-1" data-bs-toggle="tooltip" title="Apagar Evento">
+                                        <i class="bi bi-trash"></i> Apagar
+                                    </button>
                                 </form>
                             }
                         </div>

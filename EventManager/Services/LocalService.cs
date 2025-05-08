@@ -19,16 +19,16 @@ namespace GestaoDeEventos.Services
             return _localRepository.ObterTodos();
         }
 
-        public async Task CriarLocal(Local local)
+        public async Task CriarLocal(Local novoLocal)
         {
             // Regra de negócio: Verifica se o nome do local já existe
             var locais = _localRepository.ObterTodos();
-            if (locais.Any(local => local.Nome == local.Nome))
+            if (locais.Any(local => local.Nome == novoLocal.Nome))
             {
                 throw new ArgumentException("Erro: Já existe um local com esse nome.");
             }
 
-            await _localRepository.Adicionar(local);
+            await _localRepository.Adicionar(novoLocal);
         }
 
         public async Task AtualizarLocal(Local local)
@@ -44,7 +44,7 @@ namespace GestaoDeEventos.Services
 
         public async Task DeletarLocal(int id)
         {
-            var existente = _localRepository.ObterTodos().FirstOrDefault(l => l.Id == id);
+            var existente = _localRepository.ObterPorId(id);
             if (existente == null)
             {
                 throw new ArgumentException("Erro: Local não encontrado.");
@@ -52,5 +52,13 @@ namespace GestaoDeEventos.Services
 
             await _localRepository.Deletar(id);
         }
+
+        public Local ObterLocalPorId(int id)
+        {
+            return _localRepository.ObterPorId(id);
+        }
+
+      
+
     }
 }

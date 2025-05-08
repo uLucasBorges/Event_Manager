@@ -113,6 +113,23 @@ namespace EventManager_Web.Controllers
             return View(eventos);
 
         }
+
+
+        public async Task<IActionResult> Locais()
+        {
+
+            if (Request.Cookies["UserToken"] != null)
+            {
+                ViewBag.Role = "user";
+            }
+
+            var locais = await _apiService.GetLocaisAsync();
+
+            return View(locais);
+
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> CriarEvento(Evento novoEvento)
         {
@@ -121,6 +138,17 @@ namespace EventManager_Web.Controllers
              return RedirectToAction("Index"); // Redireciona para a lista de evento
     
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> CriarLocal(Local novoLocal)
+        {
+
+            await _apiService.CriarLocalAsync(novoLocal);
+            return View(); // Redireciona para a lista de evento
+
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> DeletarEvento(int eventoId)
@@ -140,6 +168,24 @@ namespace EventManager_Web.Controllers
             return  View(evento);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> DeletarLocal(int localId)
+        {
+            await _apiService.DeletarLocalAsync(localId);
+            return RedirectToAction("Locais");
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> AtualizarLocal(int localId)
+        {
+            var evento = await _apiService.GetLocaisIDAsync(localId);
+
+            ViewBag.Locais = await _apiService.GetLocaisAsync();
+
+            return View(evento);
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> AtualizarEventoUpdate(Evento evento)
@@ -150,6 +196,14 @@ namespace EventManager_Web.Controllers
             return View("AtualizarEvento", evento);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AtualizarLocalUpdate(Local local)
+        {
+            await _apiService.AtualizarLocal(local);
+            ViewBag.Locais = await _apiService.GetLocaisAsync();
+
+            return View("AtualizarLocal", local);
+        }
 
 
 
@@ -161,7 +215,16 @@ namespace EventManager_Web.Controllers
             return View(new Evento()); // Envia um modelo vazio
         }
 
-   
+
+        public async Task<IActionResult> CriarLocal()
+        {
+            var locais = await _apiService.GetLocaisAsync();
+            ViewBag.Locais = locais;
+
+            return View(new Local()); // Envia um modelo vazio
+        }
+
+
 
         public IActionResult Checkout()
         {

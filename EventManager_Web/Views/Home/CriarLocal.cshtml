@@ -1,0 +1,51 @@
+﻿@model EventManager_Web.Models.Local
+
+<h1 class="text-center mt-4">Criar Novo Local</h1>
+
+<div class="container mt-4">
+    <form id="eventForm" method="post" asp-controller="Home" asp-action="CriarLocal">
+        <!-- Nome do local -->
+        <div class="mb-3">
+            <label asp-for="Nome" class="form-label">Nome do Local</label>
+            <input type="text" class="form-control" asp-for="Nome" placeholder="Digite o nome do evento" required>
+        </div>
+
+
+        <!-- Endereço -->
+        <div class="mb-3">
+            <label asp-for="Endereco" class="form-label">Descrição</label>
+            <textarea class="form-control" asp-for="Endereco" rows="3" placeholder="Digite o endereço do local" required></textarea>
+        </div>
+
+
+      <!-- Botão para criar o local -->
+<div class="d-flex justify-content-end gap-2 mb-3">
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">Criar Local</button>
+    </div>
+
+    <!-- Visualiza os locais já existentes -->
+    <a asp-controller="Home" asp-action="Locais" class="btn btn-primary" data-bs-toggle="tooltip" title="Visualizar Locais">
+        <i class="bi bi-geo-alt"></i> Ver Locais existentes
+    </a>
+</div>
+
+    </form>
+</div>
+
+<!-- Alerta Sobreposto -->
+<div id="alertNotification" class="position-fixed top-50 start-50 translate-middle alert alert-success text-center shadow-lg"
+     style="display: none; z-index: 1050; padding: 20px; min-width: 300px; border-radius: 8px;">
+    ✅ Local criado com sucesso!
+</div>
+
+<!-- Inclusão do JavaScript -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#eventForm").submit(function () {
+            // Exibe o alerta sobreposto antes de enviar o formulário
+            $("#alertNotification").fadeIn().delay(2000).fadeOut();
+        });
+    });
+</script>

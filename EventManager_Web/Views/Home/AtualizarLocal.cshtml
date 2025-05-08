@@ -1,0 +1,44 @@
+﻿@model Local
+
+<h1 class="text-center mt-4">Atualizar Local</h1>
+
+<div class="container mt-4">
+    <form id="localForm" method="post" asp-action="AtualizarLocalUpdate">
+        <input type="hidden" name="Id" value="@Model.Id" />
+
+        <!-- Nome do Local -->
+        <div class="mb-3">
+            <label for="nomeLocal" class="form-label">Nome do Local</label>
+            <input type="text" class="form-control" id="nomeLocal" name="Nome" value="@Model.Nome" required>
+        </div>
+
+        <!-- Endereço -->
+        <div class="mb-3">
+            <label for="enderecoLocal" class="form-label">Endereço</label>
+            <textarea class="form-control" id="enderecoLocal" name="Endereco" rows="3" required>@Model.Endereco</textarea>
+        </div>
+
+        <!-- Botões para atualizar ou cancelar -->
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Atualizar Local</button>
+            <a asp-action="Locais" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+<!-- Alerta Sobreposto -->
+<div id="alertNotification" class="position-fixed top-50 start-50 translate-middle alert alert-success text-center shadow-lg"
+     style="display: none; z-index: 1050; padding: 20px; min-width: 300px; border-radius: 8px;">
+    ✅ Local atualizado com sucesso!
+</div>
+
+<!-- Inclusão do JavaScript -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#localForm").submit(function () {
+            // Exibe o alerta sobreposto antes de enviar o formulário
+            $("#alertNotification").fadeIn().delay(2000).fadeOut();
+        });
+    });
+</script>

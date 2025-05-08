@@ -36,6 +36,15 @@ namespace EventManager_Web.Services
             return JsonSerializer.Deserialize<Evento>(jsonString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
 
+        public async Task<Local> GetLocaisIDAsync(int id)
+        {
+            var response = await _httpClient.GetAsync($"api/locais/{id}");
+            response.EnsureSuccessStatusCode();
+
+            var jsonString = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<Local>(jsonString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
+
 
         public async Task<IEnumerable<Local>> GetLocaisAsync()
         {
@@ -48,6 +57,17 @@ namespace EventManager_Web.Services
 
 
 
+    
+
+        public async Task<bool> CriarLocalAsync(Local novoLocal)
+        {
+            var jsonLocal = JsonSerializer.Serialize(novoLocal);
+            var content = new StringContent(jsonLocal, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PostAsync("api/locais", content);
+
+            return response.IsSuccessStatusCode; // Retorna true se o evento foi criado com sucesso
+        }
 
         public async Task<bool> CriarEventoAsync(Evento novoEvento)
         {
@@ -77,6 +97,27 @@ namespace EventManager_Web.Services
 
             return response.IsSuccessStatusCode; // Retorna true se o evento foi criado com sucesso
         }
+
+
+        public async Task<bool> DeletarLocalAsync(int eventoId)
+        {
+
+            var content = new StringContent("", Encoding.UTF8, "application/json"); // Corpo vazio
+            var response = await _httpClient.PostAsync($"api/locais/deletar/{eventoId}", content);
+
+            return response.IsSuccessStatusCode;
+        }
+
+        public async Task<bool> AtualizarLocal(Local novoEvento)
+        {
+            var jsonEvento = JsonSerializer.Serialize(novoEvento);
+            var content = new StringContent(jsonEvento, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PostAsync("api/locais/atualizar", content);
+
+            return response.IsSuccessStatusCode; // Retorna true se o evento foi criado com sucesso
+        }
+
 
         public async Task<bool> Register(registerModel usuario)
         {
